@@ -1,0 +1,30 @@
+body {
+    display: grid;
+    justify-content: center;
+    
+    height: 100vh;
+}
+
+#gameBoard {
+    height: 600px;
+    width:  600px;
+    display: grid;
+    grid: repeat(3, 1fr) / repeat(3, 1fr);
+}
+
+.tile {
+    width: 100%;
+    border: 1px solid black;
+}
+
+h1 {
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    justify-content: center;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
