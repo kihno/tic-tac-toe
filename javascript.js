@@ -1,8 +1,14 @@
 
-const gameBoard = (() => {
+const game = (() => {
 
-    let board = [];
+    const gameBoard = document.getElementById('gameBoard');
+    const spaces = Array.from(gameBoard.children);
     const tiles = document.querySelectorAll('.tiles');
+    const display = document.getElementById('display');
+
+    const board = spaces.map(el => {
+        return el.id;
+    });
     
     tiles.forEach(tile => {
         playerMove(tile);
@@ -12,15 +18,25 @@ const gameBoard = (() => {
         tile.addEventListener('click', () => {
             if (tile.textContent === '') {
                 tile.textContent = 'X';
-                board.push('X');
+                board[tile.id] = 'X';
                 machineMove().machineLogic();
+                checkWinner();
             }
         });
     }
 
-    // function checkWinner() {
-    //     if ()
-    // }
+    function checkWinner() {
+        if (board[0] === 'X' && board[1] === 'X' && board[2] === 'X' ||
+            board[3] === 'X' && board[4] === 'X' && board[5] === 'X' ||
+            board[6] === 'X' && board[7] === 'X' && board[8] === 'X' ||
+            board[0] === 'X' && board[3] === 'X' && board[6] === 'X' ||
+            board[1] === 'X' && board[4] === 'X' && board[7] === 'X' ||
+            board[2] === 'X' && board[5] === 'X' && board[8] === 'X' ||
+            board[0] === 'X' && board[4] === 'X' && board[8] === 'X' ||
+            board[2] === 'X' && board[4] === 'X' && board[6] === 'X') {
+            display.textContent = 'Player wins';
+        }
+    }
 
     return {
         tiles,
@@ -43,22 +59,20 @@ const machineMove = (() => {
 
     const emptySpaces = [];
 
-    gameBoard.tiles.forEach(tile => {
+    game.tiles.forEach(tile => {
         if (tile.textContent === '') {
             emptySpaces.push(tile)
         }
-    })
+    });
 
-    function random() {
-        return emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
-    }
-
+    const random = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
+    
     function machineLogic() {
         if (emptySpaces.length === 0) {
             console.log('Tie Game');
         } else {
-            random().textContent = 'O';
-            gameBoard.board.push('O');
+            random.textContent = 'O';
+            game.board[random.id] = 'O';
         }
     }
 
