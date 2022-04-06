@@ -1,6 +1,7 @@
 
 const game = (() => {
-
+    
+    // Cache DOM
     const gameBoard = document.getElementById('gameBoard');
     const spaces = Array.from(gameBoard.children);
     const tiles = document.querySelectorAll('.tiles');
@@ -10,70 +11,108 @@ const game = (() => {
         return el.id;
     });
     
-    tiles.forEach(tile => {
-        playerMove(tile);
-    });
+   tiles.forEach(tile => {
+        tile.addEventListener('click', playerMove, {once: true})
+   })
+    
+   function playerMove(e) {
+        let playerToken = 'X'
+        const tile = e.target
 
-    function playerMove(tile) {
-        tile.addEventListener('click', () => {
-            if (tile.textContent === '') {
-                tile.textContent = 'X';
-                board[tile.id] = 'X';
-                machineMove().machineLogic();
-                checkWinner();
-            }
-        });
+        placeMark(tile, playerToken)
+        checkWin(playerToken)
+
+        machineMove().machineLogic()
     }
 
-    function checkWinner() {
-        if (board[0] === 'X' && board[1] === 'X' && board[2] === 'X' ||
-            board[3] === 'X' && board[4] === 'X' && board[5] === 'X' ||
-            board[6] === 'X' && board[7] === 'X' && board[8] === 'X' ||
-            board[0] === 'X' && board[3] === 'X' && board[6] === 'X' ||
-            board[1] === 'X' && board[4] === 'X' && board[7] === 'X' ||
-            board[2] === 'X' && board[5] === 'X' && board[8] === 'X' ||
-            board[0] === 'X' && board[4] === 'X' && board[8] === 'X' ||
-            board[2] === 'X' && board[4] === 'X' && board[6] === 'X') {
-            display.textContent = 'Player wins';
+    function placeMark(tile, currentToken) {
+        tile.textContent = currentToken;
+        board[tile.id] = currentToken;
+    }
+
+    function checkWin(currentToken) {
+        if (board[0] === currentToken && board[1] === currentToken && board[2] === currentToken ||
+            board[3] === currentToken && board[4] === currentToken && board[5] === currentToken ||
+            board[6] === currentToken && board[7] === currentToken && board[8] === currentToken ||
+            board[0] === currentToken && board[3] === currentToken && board[6] === currentToken ||
+            board[1] === currentToken && board[4] === currentToken && board[7] === currentToken ||
+            board[2] === currentToken && board[5] === currentToken && board[8] === currentToken ||
+            board[0] === currentToken && board[4] === currentToken && board[8] === currentToken ||
+            board[2] === currentToken && board[4] === currentToken && board[6] === currentToken) {
+                display.textContent = `${currentToken} wins.`;
+                tiles.forEach(tile => {
+                    tile.disabled = true;
+                });
+            } else {
+                checkTie()
+            }
+    }
+
+    function checkTie() {
+        let emptySpaces = []
+
+        tiles.forEach(tile => {
+            if (tile.textContent === '') {
+                emptySpaces.push(tile)
+            }
+        })
+
+        if (emptySpaces.length === 0) {
+            tiles.forEach(tile => {
+                tile.disabled = true;
+            });
+            display.textContent = 'Tie Game.';
         }
     }
 
     return {
         tiles,
         board,
-        playerMove,
+        checkWin
     }
 
 })();
 
-const player = (name) => {
+const player = (name, token) => {
 
     return {
         name,
+        token
     }
 };
 
-const machine = player('The Machine');
+let newUser = player('Alan', 'X');
+
+const machine = player('The Machine', 'O');
 
 const machineMove = (() => {
+    machineToken = 'O';
 
-    const emptySpaces = [];
+    function getRandom() {
+        let emptySpaces = []
 
-    game.tiles.forEach(tile => {
-        if (tile.textContent === '') {
-            emptySpaces.push(tile)
-        }
-    });
+        game.tiles.forEach(tile => {
+            if (tile.textContent === '') {
+                emptySpaces.push(tile)
+            }
+        })
 
-    const random = emptySpaces[Math.floor(Math.random()*emptySpaces.length)];
-    
+        const random = emptySpaces[Math.floor(Math.random()*emptySpaces.length)]
+        return random
+    }
+
     function machineLogic() {
-        if (emptySpaces.length === 0) {
-            console.log('Tie Game');
+        choice = getRandom()
+
+        if (choice === undefined) {
+            return
         } else {
-            random.textContent = 'O';
-            game.board[random.id] = 'O';
+            choice.textContent = machineToken;
+            game.board[choice.id] = machineToken;
+
+            game.checkWin(machineToken)
         }
+        
     }
 
     return {
