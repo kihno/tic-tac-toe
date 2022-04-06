@@ -1,8 +1,28 @@
 body {
     display: grid;
     justify-content: center;
-    
+    grid-template-rows: 1rem, 1fr, 1fr;
     height: 100vh;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+header {
+    margin: 0;
+    display: grid;
+    place-items: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+#display {
+    height: 100px;
+    color: #53b3cb;
+    font-size: 50px;
+    font-weight: bold;
+    justify-items: center;
+    align-content: end;
 }
 
 #start{
@@ -13,20 +33,53 @@ body {
     border: 1px solid black;
     border-radius: 20px;
 }
+#frame {
+    position: relative;
+}
 
 #end{
-    position: absolute;
-    height: 600px;
-    width: 600px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    height: 300px;
+    width: 300px;
     display: none;
+    grid-template-rows: 1fr 2fr;
     place-items: center;
     border: 1px solid black;
     border-radius: 20px;
+    position: absolute;
+    left: 145px;
+    top: 145px;
+}
+
+#play, #playAgain {
+    color: white;
+    font-weight: bold;
+    height: 120px;
+    width: 250px;
+    border: none;
+    border-radius: 10px;
+    position: relative;
+}
+
+#play{
+    background-color: #53b3cb;
+    box-shadow: 0 10px #2893ad;
+    font-size: 50px;
 }
 
 #playAgain {
-    background-color: blue;
+    background-color: #f15946;
+    box-shadow: 0 10px #d1301b;
+    font-size: 40px;
+    align-self: start;
 }
+
+#play:active, #playAgain:active {
+    box-shadow: none;
+    top: 10px;
+}
+
 
 #gameBoard {
     height: 600px;
@@ -71,11 +124,7 @@ body {
     border-left: none;
 }
 
-h1 {
-    font-family: 'Courier New', Courier, monospace;
-    display: flex;
-    justify-content: center;
-}
+
 
 footer {
     display: flex;

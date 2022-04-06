@@ -78,7 +78,7 @@ const game = (() => {
 
     function endGame() {
         gameOver = true;
-        // gameBoard.style.display = 'none';
+
         endScreen.style.display = 'grid';
         tiles.forEach(tile => {
             tile.style.color = '#666'
@@ -86,18 +86,21 @@ const game = (() => {
 
 
         playAgain.addEventListener('click', () => {
-            endScreen.style.display = 'none';
-            // gameBoard.style.display = 'grid';
-            resetBoard();
+            setTimeout(() => {
+                endScreen.style.display = 'none';
+                resetBoard();
+            }, 200)
         })
     }
 
     function resetBoard() {
         tiles.forEach(tile => {
+            display.textContent = '';
             tile.textContent = '';
             board[tile.id] = tile.id;
             tiles.forEach(tile => {
                 tile.disabled = false;
+                tile.style.color = '#000';
             });
             gameOver = false;
         })
@@ -130,8 +133,10 @@ const start = (() => {
     const gameBoard = document.getElementById('gameBoard');
 
     playButton.addEventListener('click', () => {
-        startScreen.style.display = 'none';
-        gameBoard.style.display = 'grid';
+        setTimeout(() => {
+            startScreen.style.display = 'none';
+            gameBoard.style.display = 'grid';
+        }, 200)
     })
 })();
 
@@ -163,7 +168,7 @@ const machineMove = (() => {
         } else {
             choice.textContent = machineToken;
             game.board[choice.id] = machineToken;
-
+            choice.disabled = true;
             game.checkWin(machineToken)
         }
         
