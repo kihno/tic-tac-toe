@@ -5,16 +5,70 @@ body {
     height: 100vh;
 }
 
+#start{
+    height: 600px;
+    width: 600px;
+    display: grid;
+    place-items: center;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+#end{
+    position: absolute;
+    height: 600px;
+    width: 600px;
+    display: none;
+    place-items: center;
+    border: 1px solid black;
+    border-radius: 20px;
+}
+
+#playAgain {
+    background-color: blue;
+}
+
 #gameBoard {
     height: 600px;
     width:  600px;
-    display: grid;
+    display: none;
     grid: repeat(3, 1fr) / repeat(3, 1fr);
 }
 
 .tiles {
+    cursor: pointer;
     width: 100%;
     border: 1px solid black;
+    background-color: white;
+    font-size: 150px;
+}
+
+.tiles:disabled {
+    color: black;
+}
+
+.tiles:nth-child(1),
+.tiles:nth-child(2),
+.tiles:nth-child(3) {
+    border-top: none;
+}
+
+.tiles:nth-child(3),
+.tiles:nth-child(6),
+.tiles:nth-child(9) {
+    border-right: none;
+}
+
+.tiles:nth-child(7),
+.tiles:nth-child(8),
+.tiles:nth-child(9) {
+    border-bottom: none;
+}
+
+.tiles:nth-child(1),
+.tiles:nth-child(4),
+.tiles:nth-child(7) {
+    border-left: none;
 }
 
 h1 {

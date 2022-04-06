@@ -6,15 +6,19 @@ const game = (() => {
     const spaces = Array.from(gameBoard.children);
     const tiles = document.querySelectorAll('.tiles');
     const display = document.getElementById('display');
+    const endScreen = document.getElementById('end');
+    const playAgain = document.getElementById('playAgain')
 
     const board = spaces.map(el => {
         return el.id;
     });
     
    tiles.forEach(tile => {
-        tile.addEventListener('click', playerMove, {once: true})
+        tile.addEventListener('click', playerMove)
    })
     
+   let gameOver = false;
+
    function playerMove(e) {
         let playerToken = 'X'
         const tile = e.target
@@ -22,12 +26,21 @@ const game = (() => {
         placeMark(tile, playerToken)
         checkWin(playerToken)
 
-        machineMove().machineLogic()
+        if (!gameOver) {
+            machineMove().machineLogic()
+        }
     }
 
     function placeMark(tile, currentToken) {
         tile.textContent = currentToken;
         board[tile.id] = currentToken;
+        tile.disabled = true;
+    }
+
+    function disableTile() {
+        tiles.forEach(tile => {
+            tile.disabled = true;
+        });
     }
 
     function checkWin(currentToken) {
@@ -39,10 +52,9 @@ const game = (() => {
             board[2] === currentToken && board[5] === currentToken && board[8] === currentToken ||
             board[0] === currentToken && board[4] === currentToken && board[8] === currentToken ||
             board[2] === currentToken && board[4] === currentToken && board[6] === currentToken) {
+                endGame();
                 display.textContent = `${currentToken} wins.`;
-                tiles.forEach(tile => {
-                    tile.disabled = true;
-                });
+                disableTile();
             } else {
                 checkTie()
             }
@@ -58,11 +70,37 @@ const game = (() => {
         })
 
         if (emptySpaces.length === 0) {
-            tiles.forEach(tile => {
-                tile.disabled = true;
-            });
+            endGame()
+            disableTile();
             display.textContent = 'Tie Game.';
         }
+    }
+
+    function endGame() {
+        gameOver = true;
+        // gameBoard.style.display = 'none';
+        endScreen.style.display = 'grid';
+        tiles.forEach(tile => {
+            tile.style.color = '#666'
+        })
+
+
+        playAgain.addEventListener('click', () => {
+            endScreen.style.display = 'none';
+            // gameBoard.style.display = 'grid';
+            resetBoard();
+        })
+    }
+
+    function resetBoard() {
+        tiles.forEach(tile => {
+            tile.textContent = '';
+            board[tile.id] = tile.id;
+            tiles.forEach(tile => {
+                tile.disabled = false;
+            });
+            gameOver = false;
+        })
     }
 
     return {
@@ -73,7 +111,12 @@ const game = (() => {
 
 })();
 
-const player = (name, token) => {
+const players = (name, token) => {
+
+    function addPlayer() {
+        let name = input;
+        let token = radio;
+    }
 
     return {
         name,
@@ -81,12 +124,23 @@ const player = (name, token) => {
     }
 };
 
-let newUser = player('Alan', 'X');
+const start = (() => {
+    const playButton = document.getElementById('play');
+    const startScreen = document.getElementById('start');
+    const gameBoard = document.getElementById('gameBoard');
 
-const machine = player('The Machine', 'O');
+    playButton.addEventListener('click', () => {
+        startScreen.style.display = 'none';
+        gameBoard.style.display = 'grid';
+    })
+})();
+
+let newUser = players('Alan', 'X');
+
+const machine = players('The Machine', 'O');
 
 const machineMove = (() => {
-    machineToken = 'O';
+    machineToken = machine.token;
 
     function getRandom() {
         let emptySpaces = []
