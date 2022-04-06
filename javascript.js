@@ -1,7 +1,17 @@
+const start = (() => {
+    const playButton = document.getElementById('play');
+    const startScreen = document.getElementById('start');
+    const gameBoard = document.getElementById('gameBoard');
+
+    playButton.addEventListener('click', () => {
+        setTimeout(() => {
+            startScreen.style.display = 'none';
+            gameBoard.style.display = 'grid';
+        }, 200)
+    })
+})();
 
 const game = (() => {
-    
-    // Cache DOM
     const gameBoard = document.getElementById('gameBoard');
     const spaces = Array.from(gameBoard.children);
     const tiles = document.querySelectorAll('.tiles');
@@ -20,20 +30,20 @@ const game = (() => {
    let gameOver = false;
 
    function playerMove(e) {
-        let playerToken = 'X'
+        let currentPlayer = playerOne
         const tile = e.target
 
-        placeMark(tile, playerToken)
-        checkWin(playerToken)
+        placeMark(tile, currentPlayer)
+        checkWin(currentPlayer)
 
         if (!gameOver) {
             machineMove().machineLogic()
         }
     }
 
-    function placeMark(tile, currentToken) {
-        tile.textContent = currentToken;
-        board[tile.id] = currentToken;
+    function placeMark(tile, currentPlayer) {
+        tile.textContent = currentPlayer.token;
+        board[tile.id] = currentPlayer.token;
         tile.disabled = true;
     }
 
@@ -43,17 +53,17 @@ const game = (() => {
         });
     }
 
-    function checkWin(currentToken) {
-        if (board[0] === currentToken && board[1] === currentToken && board[2] === currentToken ||
-            board[3] === currentToken && board[4] === currentToken && board[5] === currentToken ||
-            board[6] === currentToken && board[7] === currentToken && board[8] === currentToken ||
-            board[0] === currentToken && board[3] === currentToken && board[6] === currentToken ||
-            board[1] === currentToken && board[4] === currentToken && board[7] === currentToken ||
-            board[2] === currentToken && board[5] === currentToken && board[8] === currentToken ||
-            board[0] === currentToken && board[4] === currentToken && board[8] === currentToken ||
-            board[2] === currentToken && board[4] === currentToken && board[6] === currentToken) {
+    function checkWin(currentPlayer) {
+        if (board[0] === currentPlayer.token && board[1] === currentPlayer.token && board[2] === currentPlayer.token ||
+            board[3] === currentPlayer.token && board[4] === currentPlayer.token && board[5] === currentPlayer.token ||
+            board[6] === currentPlayer.token && board[7] === currentPlayer.token && board[8] === currentPlayer.token ||
+            board[0] === currentPlayer.token && board[3] === currentPlayer.token && board[6] === currentPlayer.token ||
+            board[1] === currentPlayer.token && board[4] === currentPlayer.token && board[7] === currentPlayer.token ||
+            board[2] === currentPlayer.token && board[5] === currentPlayer.token && board[8] === currentPlayer.token ||
+            board[0] === currentPlayer.token && board[4] === currentPlayer.token && board[8] === currentPlayer.token ||
+            board[2] === currentPlayer.token && board[4] === currentPlayer.token && board[6] === currentPlayer.token) {
                 endGame();
-                display.textContent = `${currentToken} wins.`;
+                display.textContent = `${currentPlayer.name} wins`;
                 disableTile();
             } else {
                 checkTie()
@@ -116,36 +126,26 @@ const game = (() => {
 
 const players = (name, token) => {
 
-    function addPlayer() {
-        let name = input;
-        let token = radio;
-    }
-
     return {
         name,
         token
     }
 };
 
-const start = (() => {
-    const playButton = document.getElementById('play');
-    const startScreen = document.getElementById('start');
-    const gameBoard = document.getElementById('gameBoard');
+let playerOne = players('Alan', 'X');
 
-    playButton.addEventListener('click', () => {
-        setTimeout(() => {
-            startScreen.style.display = 'none';
-            gameBoard.style.display = 'grid';
-        }, 200)
-    })
-})();
+function getToken() {
+    if (playerOne.token === 'X') {
+        return 'O'
+    } else {
+        return 'X'
+    }
+}
 
-let newUser = players('Alan', 'X');
-
-const machine = players('The Machine', 'O');
+const machine = players('The Machine', getToken());
 
 const machineMove = (() => {
-    machineToken = machine.token;
+    currentPlayer = machine;
 
     function getRandom() {
         let emptySpaces = []
@@ -166,10 +166,10 @@ const machineMove = (() => {
         if (choice === undefined) {
             return
         } else {
-            choice.textContent = machineToken;
-            game.board[choice.id] = machineToken;
+            choice.textContent = machine.token;
+            game.board[choice.id] = machine.token;
             choice.disabled = true;
-            game.checkWin(machineToken)
+            game.checkWin(machine)
         }
         
     }
