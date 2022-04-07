@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
+
 body {
     display: grid;
     justify-content: center;
@@ -88,11 +90,12 @@ h1 {
 }
 
 .tiles {
+    font-family: 'Permanent Marker', cursive;
     cursor: pointer;
     width: 100%;
     border: 1px solid black;
     background-color: white;
-    font-size: 150px;
+    font-size: 130px;
 }
 
 .tiles:disabled {

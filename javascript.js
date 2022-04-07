@@ -63,7 +63,7 @@ const game = (() => {
             board[0] === currentPlayer.token && board[4] === currentPlayer.token && board[8] === currentPlayer.token ||
             board[2] === currentPlayer.token && board[4] === currentPlayer.token && board[6] === currentPlayer.token) {
                 endGame();
-                display.textContent = `${currentPlayer.name} wins`;
+                display.textContent = `${currentPlayer.name} Wins`;
                 disableTile();
             } else {
                 checkTie()
@@ -132,7 +132,7 @@ const players = (name, token) => {
     }
 };
 
-let playerOne = players('Alan', 'X');
+let playerOne = players('Player One', 'X');
 
 function getToken() {
     if (playerOne.token === 'X') {
