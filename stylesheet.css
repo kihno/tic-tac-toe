@@ -36,6 +36,7 @@ h1 {
 }
 #frame {
     position: relative;
+    width: 600px;
 }
 
 #end{
@@ -126,10 +127,28 @@ h1 {
     border-left: none;
 }
 
-
-
 footer {
     display: flex;
     justify-content: center;
     align-items: end;
+}
+
+@media screen and (max-width: 600px) {
+    #start, #frame, #gameBoard, #end {
+        width: 300px;
+        height: 300px;
+    }
+
+    .tiles {
+        font-size: 50px;
+    }
+
+    #end {
+        left: 0;
+        top: 0;
+    }
+
+    #display {
+        font-size: 30px;
+    }
 }
