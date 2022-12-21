@@ -6,7 +6,7 @@ https://kihno.github.io/tic-tac-toe/
 
 ## Description
 
-A Tic Tac Toe game build with vanilla javascript
+A Tic Tac Toe game built with vanilla javascript
 
 ## Built With
 
